@@ -87,10 +87,12 @@ export function makeGame() {
     st.frozen = true;
     if (name === 'start') { loadLevel(0); st.screen = 'start'; }
     else if (name === 'play') {
-      loadLevel(2); st.screen = 'play';
+      // Level 1 in its solved state: one clean, fully connected beam, one lit
+      // crystal and a glowing receiver — the clearest possible "aha" frame.
+      loadLevel(0); st.screen = 'play';
       st.prisms.forEach((p, i) => { p.kind = st.level.solve[i]; });
-      st.selected = st.prisms[2]; refresh();
-      st.movesLeft = 4; st.score = 1050;
+      st.selected = st.prisms[0]; refresh();
+      st.movesLeft = 2; st.score = 1350;
     } else if (name === 'win') {
       loadLevel(3); st.screen = 'win'; st.score = 4250;
       st.prisms.forEach((p, i) => { p.kind = st.level.solve[i]; });

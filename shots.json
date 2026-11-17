@@ -1,6 +1,18 @@
 [
-  { "name": "1-start.jpg", "query": "?shot=start" },
-  { "name": "2-play.jpg", "query": "?shot=play" },
-  { "name": "3-win.jpg", "query": "?shot=win" },
-  { "name": "4-lose.jpg", "query": "?shot=lose" }
+  {
+    "name": "1-play.jpg",
+    "query": "?shot=play"
+  },
+  {
+    "name": "2-start.jpg",
+    "query": "?shot=start"
+  },
+  {
+    "name": "3-win.jpg",
+    "query": "?shot=win"
+  },
+  {
+    "name": "4-lose.jpg",
+    "query": "?shot=lose"
+  }
 ]
