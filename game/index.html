@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prism Pulse</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #06091c; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; font-family: "Trebuchet MS", system-ui, sans-serif; }
+  #stage { position: relative; width: 960px; height: 600px; }
+  canvas { display: block; width: 960px; height: 600px; border-radius: 14px; box-shadow: 0 0 60px rgba(0,240,255,.12), inset 0 0 0 1px rgba(120,160,255,.14); }
+  #hint { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; color: rgba(190,215,255,.35); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; pointer-events: none; }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="screen" width="960" height="600"></canvas>
+    <div id="hint">click a prism to rotate &nbsp;·&nbsp; R to restart &nbsp;·&nbsp; M to mute</div>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
