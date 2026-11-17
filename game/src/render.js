@@ -12,16 +12,17 @@ function cellCenter(c, r) {
 
 function bg(ctx, t) {
   const g = ctx.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, '#1b2a6b');
-  g.addColorStop(0.45, '#3a2a86');
-  g.addColorStop(1, '#0f5f83');
+  g.addColorStop(0, '#3f63c9');
+  g.addColorStop(0.45, '#7a4fc7');
+  g.addColorStop(1, '#2aa8bd');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
 
   const blooms = [
-    [150, 130, 240, 'rgba(90,160,255,0.28)'],
-    [820, 120, 260, 'rgba(255,90,200,0.22)'],
-    [480, 520, 320, 'rgba(90,255,210,0.16)'],
+    [150, 130, 260, 'rgba(120,200,255,0.46)'],
+    [820, 120, 280, 'rgba(255,120,215,0.38)'],
+    [480, 520, 340, 'rgba(110,255,220,0.30)'],
+    [880, 520, 230, 'rgba(255,225,120,0.24)'],
   ];
   for (const [x, y, rad, col] of blooms) {
     const rg = ctx.createRadialGradient(x, y, 10, x, y, rad);
@@ -31,13 +32,22 @@ function bg(ctx, t) {
     ctx.fillRect(x - rad, y - rad, rad * 2, rad * 2);
   }
 
-  ctx.fillStyle = 'rgba(230,245,255,0.75)';
-  for (let i = 0; i < 95; i++) {
+  const starCols = ['#ffffff','#9ff6ff','#ffe79a','#ffb3e6','#b6ffd8'];
+  for (let i = 0; i < 330; i++) {
+    ctx.fillStyle = starCols[i % starCols.length];
     const x = (i * 149.3 + t * 0.014) % W;
     const y = (i * 83.7 + t * 0.007) % H;
-    const s = i % 7 === 0 ? 3 : 2;
+    const s = i % 9 === 0 ? 4 : (i % 3 === 0 ? 3 : 2);
     ctx.globalAlpha = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(i * 1.7 + t * 0.002));
     ctx.fillRect(x, y, s, s);
+  }
+  ctx.globalAlpha = 1;
+  const noiseCols = ['#ffffff','#8fd8ff','#ffd98f','#ff9fd8','#a8ffd8','#c8b6ff'];
+  for (let i = 0; i < 900; i++) {
+    const x = (i * 311.7) % W, y = (i * 191.3) % H;
+    ctx.fillStyle = noiseCols[i % noiseCols.length];
+    ctx.globalAlpha = 0.10 + 0.16 * ((i * 37) % 7) / 7;
+    ctx.fillRect(x, y, 1, 1);
   }
   ctx.globalAlpha = 1;
 }
@@ -47,7 +57,7 @@ function board(ctx) {
   ctx.save();
   ctx.shadowColor = 'rgba(80,200,255,0.85)';
   ctx.shadowBlur = 34;
-  ctx.fillStyle = 'rgba(12,24,68,0.90)';
+  ctx.fillStyle = 'rgba(26,48,120,0.84)';
   ctx.strokeStyle = 'rgba(130,220,255,0.85)';
   ctx.lineWidth = 3;
   ctx.beginPath();
@@ -56,7 +66,7 @@ function board(ctx) {
   ctx.stroke();
   ctx.restore();
 
-  ctx.strokeStyle = 'rgba(140,200,255,0.30)';
+  ctx.strokeStyle = 'rgba(190,225,255,0.45)';
   ctx.lineWidth = 1.4;
   for (let c = 0; c <= COLS; c++) {
     ctx.beginPath();
@@ -199,8 +209,8 @@ function text(ctx, str, x, y, size, color, align, weight) {
 
 function hud(ctx, st) {
   const g = ctx.createLinearGradient(0, 0, W, 0);
-  g.addColorStop(0, 'rgba(12,30,84,0.97)');
-  g.addColorStop(1, 'rgba(30,20,80,0.97)');
+  g.addColorStop(0, 'rgba(28,62,150,0.97)');
+  g.addColorStop(1, 'rgba(96,46,150,0.97)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, HUD_H);
   text(ctx, 'PRISM PULSE', 26, 30, 30, '#7ff6ff', 'left', 800);
@@ -221,12 +231,12 @@ function hud(ctx, st) {
 }
 
 function centerPanel(ctx, title, lines, accent, score) {
-  ctx.fillStyle = 'rgba(6,10,38,0.62)';
+  ctx.fillStyle = 'rgba(10,18,60,0.38)';
   ctx.fillRect(0, 0, W, H);
   const pw = 720, ph = 350, px = (W - pw) / 2, py = (H - ph) / 2 - 10;
   ctx.save();
   ctx.shadowColor = accent; ctx.shadowBlur = 48;
-  ctx.fillStyle = 'rgba(14,28,78,0.97)';
+  ctx.fillStyle = 'rgba(28,54,124,0.96)';
   ctx.strokeStyle = accent; ctx.lineWidth = 4;
   ctx.beginPath(); ctx.roundRect(px, py, pw, ph, 26); ctx.fill(); ctx.stroke();
   ctx.restore();
