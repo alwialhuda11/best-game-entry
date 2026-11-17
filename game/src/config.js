@@ -15,6 +15,9 @@ export const COLORS = {
   dim: '#7a88b8',
 };
 
+export const GAME_TITLE = 'LUMEN TIDE';
+export const STORY = 'Guide the tide of light through the drowned archive. Wake every beacon, then open the gate.';
+
 export const CELL = 64;
 export const COLS = 9;
 export const ROWS = 6;

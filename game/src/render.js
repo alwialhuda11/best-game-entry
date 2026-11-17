@@ -1,7 +1,7 @@
 // Canvas renderer for Prism Pulse — vivid, dense, contact-sheet-first presentation.
 // The judge sees a small contact sheet, so every shot must read instantly:
 // bright board, thick beam, large type, and one unmistakable "aha" moment.
-import { COLORS, CELL, COLS, ROWS, BOARD_X, BOARD_Y } from './config.js';
+import { COLORS, CELL, COLS, ROWS, BOARD_X, BOARD_Y, GAME_TITLE, STORY } from './config.js';
 
 const W = 960, H = 600;
 const HUD_H = 76;
@@ -213,7 +213,7 @@ function hud(ctx, st) {
   g.addColorStop(1, 'rgba(96,46,150,0.97)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, HUD_H);
-  text(ctx, 'PRISM PULSE', 26, 30, 30, '#7ff6ff', 'left', 800);
+  text(ctx, GAME_TITLE, 26, 30, 30, '#7ff6ff', 'left', 800);
   text(ctx, `LEVEL ${st.levelIndex + 1}/${st.levels.length}`, 270, 27, 20, '#ffffff', 'center', 800);
   text(ctx, st.level.name.toUpperCase(), 270, 55, 15, '#b8c9ff', 'center', 600);
   text(ctx, `MOVES ${st.movesLeft}`, 510, 30, 24, st.movesLeft <= 2 ? '#ff87e0' : '#ffd166', 'center', 800);
@@ -260,6 +260,28 @@ function confetti(ctx, t) {
   }
 }
 
+function levelStrip(ctx, st) {
+  const y = 480, w = 150, gap = 18;
+  const total = st.levels.length * w + (st.levels.length - 1) * gap;
+  let x = (W - total) / 2;
+  st.levels.forEach((lv, i) => {
+    const cleared = i < st.levelIndex;
+    const active = i === st.levelIndex;
+    ctx.save();
+    ctx.shadowColor = cleared ? '#9dffcf' : (active ? '#7ff6ff' : '#8ea6d8');
+    ctx.shadowBlur = cleared || active ? 20 : 6;
+    ctx.fillStyle = cleared ? 'rgba(30,110,96,0.85)' : (active ? 'rgba(30,90,150,0.9)' : 'rgba(24,44,88,0.8)');
+    ctx.strokeStyle = cleared ? '#9dffcf' : (active ? '#7ff6ff' : '#6f8ec0');
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.roundRect(x, y, w, 82, 12); ctx.fill(); ctx.stroke();
+    ctx.restore();
+    text(ctx, 'CHAMBER ' + (i + 1), x + w / 2, y + 24, 15, '#dcecff', 'center', 700);
+    text(ctx, lv.crystals.length + ' BEACONS', x + w / 2, y + 54, 17,
+      cleared ? '#9dffcf' : '#ffd166', 'center', 800);
+    x += w + gap;
+  });
+}
+
 export function render(ctx, st, t) {
   bg(ctx, t);
   board(ctx);
@@ -270,21 +292,23 @@ export function render(ctx, st, t) {
   beam(ctx, st.beam && st.beam.points, t);
   hud(ctx, st);
   if (st.screen === 'start') {
-    centerPanel(ctx, 'PRISM PULSE', [
-      'Bend the laser. Light every crystal. Reach the receiver.',
-      'Click a prism to rotate it. Solve in limited moves.',
+    centerPanel(ctx, GAME_TITLE, [
+      STORY,
+      'Rotate prisms. Wake every beacon. Open the gate.',
       'CLICK TO START',
     ], '#7ff6ff');
+    levelStrip(ctx, st);
   } else if (st.screen === 'win') {
     confetti(ctx, t);
-    centerPanel(ctx, 'ALL LEVELS CLEAR', [
-      'Every crystal lit. Every beam delivered.',
+    centerPanel(ctx, 'THE ARCHIVE IS LIT', [
+      'All four chambers cleared. Every beacon awake.',
       'CLICK OR PRESS R TO PLAY AGAIN',
     ], '#9dffcf', st.score);
+    levelStrip(ctx, st);
   } else if (st.screen === 'lose') {
     centerPanel(ctx, 'OUT OF MOVES', [
-      `Level ${st.levelIndex + 1} — ${st.level.name}`,
-      'Reposition the prisms and try again.',
+      `Chamber ${st.levelIndex + 1} — ${st.level.name}`,
+      'Rotate the prisms again and retry.',
     ], '#ff87e0');
   }
 }
