@@ -101,6 +101,7 @@ export function makeGame() {
       loadLevel(1); st.screen = 'lose'; st.movesLeft = 0; st.score = 600;
     }
     st.beam = traceBeam(st.level, st.prisms);
+    st.levelLit = Boolean(st.beam.hitReceiver);
   }
   st.shot = shot;
 
